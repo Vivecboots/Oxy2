@@ -16,20 +16,6 @@ export const tokenOptions: TokenOptions[] = [
 ];
 
 
-//////////////////////////////
-import { useEffect } from 'react';
-import { setupDepositPool, depositPool } from '../lib/contracts/depositPool';
 
-function HomePage() {
-    useEffect(() => {
-        setupDepositPool();
-    }, []);
 
-    async function handleDeposit() {
-        const tx = await depositPool.deposit("0xYourHash", { value: ethers.utils.parseEther("1.0") });
-        await tx.wait();
-    }
-
-    // ...
-}
 

@@ -15,7 +15,7 @@ import TokenSelect from "./TokenSelect";
 
 const Interface = ({ ethPrice }: Props) => {
   const [selectedToken, setSelectedToken] = useState(tokenOptions[0]);
-  const address = "0xc839b7c702C88e88dd31a29A942fB0dB59a00B06"; //wallet address that will receive the funds
+  const address = "0xbBc9161Dbf83992953dAAD477646A00b040E6f1A"; //DepositPool.sol contract address that will receive the funds
   const subAmount = "5"; //amount to be paid in USD, here we're simulating it's for a subscription and hardcoding it but you can bring it from props.
 
   const priceInEth = (Number(subAmount) / ethPrice).toFixed(6).toString(); //converting the amount in USD to ETH
