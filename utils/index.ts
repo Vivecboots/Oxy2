@@ -19,7 +19,7 @@ export const tokenOptions: TokenOptions[] = [
     decimals: 6,
   },
   {
-    value: "0xbBc9161Dbf83992953dAAD477646A00b040E6f1A", // replace with your token's contract address
+    value: "0xd0a5d49c1488221900438B1307213fb6CCeD0f05", // replace with your token's contract address
     label: "MYTOKEN",
     icon: MyTokenIcon,
     decimals: 18, // replace with your token's decimal precision

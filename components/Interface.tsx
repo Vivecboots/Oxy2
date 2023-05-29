@@ -15,38 +15,36 @@ import TokenSelect from "./TokenSelect";
 
 const Interface = ({ ethPrice }: Props) => {
   const [selectedToken, setSelectedToken] = useState(tokenOptions[0]);
+  const [amount, setAmount] = useState(""); // Add state to handle input amount
   const address = "0xbBc9161Dbf83992953dAAD477646A00b040E6f1A"; //DepositPool.sol contract address that will receive the funds
-  const subAmount = "5"; //amount to be paid in USD, here we're simulating it's for a subscription and hardcoding it but you can bring it from props.
 
-  const priceInEth = (Number(subAmount) / ethPrice).toFixed(6).toString(); //converting the amount in USD to ETH
+  const priceInEth = (Number(amount || "0") / ethPrice).toFixed(6).toString(); //converting the amount in USD to ETH
 
   const handleTokenChange = (value: TokenOptions) => {
     setSelectedToken(value); //change selected token
   };
 
-  //Pay with custom token (USDC) https://wagmi.sh/docs/hooks/useContractWrite
+  //Pay with custom token (USDC)
   const { config: configWrite } = usePrepareContractWrite({
-    address: selectedToken.value, //Goerli USDC contract address
-    abi: erc20ABI, //Standard ERC-20 ABI https://www.quicknode.com/guides/smart-contract-development/what-is-an-abi
-    functionName: "transfer", //We're going to use the tranfer method provided in the ABI, here's an example of a standard transfer method https://docs.ethers.io/v5/single-page/#/v5/api/contract/example/
-    args: [address, parseUnits(subAmount, 6)], //[receiver, amount] Note that the units to parse are six because that's the number of decimals set for USDC in its contract. In order to add another token with a different amount of decimals its necessary to add additional logic here for it to work.
+    address: selectedToken.value,
+    abi: erc20ABI,
+    functionName: "transfer",
+    args: [address, parseUnits(amount || "0", 6)],
   });
   const { data: dataWrite, write } = useContractWrite(configWrite);
 
-  //Pay with ether https://wagmi.sh/docs/prepare-hooks/usePrepareSendTransaction
+  //Pay with ether
   const { config } = usePrepareSendTransaction({
     request: {
       to: address,
-      value: parseEther(priceInEth), // parse the ETH amount to make it readable for the Ethereum Virtual Machine --- https://docs.ethers.io/v4/api-utils.html
+      value: parseEther(amount || "0"),
     },
   });
 
-  //https://wagmi.sh/docs/hooks/useSendTransaction
   const { data, sendTransaction } = useSendTransaction(config);
-
-  //Wait for payment to be completed https://wagmi.sh/docs/hooks/useWaitForTransaction
+  
   const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash || dataWrite?.hash, //transaction hash
+    hash: data?.hash || dataWrite?.hash,
   });
 
   return (
@@ -67,7 +65,7 @@ const Interface = ({ ethPrice }: Props) => {
         justifyContent="space-between"
         borderRadius="1.37rem 1.37rem 0 0"
       >
-        <Flex color="black" fontWeight="500">
+         <Flex color="black" fontWeight="500">
           <Text ml={1}>1 ETH = USD {ethPrice}</Text>
         </Flex>
       </Flex>
@@ -88,7 +86,8 @@ const Interface = ({ ethPrice }: Props) => {
                   pos="relative"
                   p="1rem 1rem 1.7rem"
                   borderRadius="1.25rem"
-                  border="0.06rem solid rgb(237, 238, 242)"
+                  border="0.06rem solid rgb
+                  (237, 238, 242)"
                   _hover={{ border: "0.06rem solid rgb(211,211,211)" }}
                 >
                   <Text color="black">To:</Text>
@@ -127,7 +126,8 @@ const Interface = ({ ethPrice }: Props) => {
                     focusBorderColor="none"
                     color="black"
                     aria-label="Amount"
-                    value={selectedToken.value ? subAmount : priceInEth}
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)} // Added onChange handler to update 'amount'
                   />
                   <Box
                     w={215}
@@ -168,8 +168,7 @@ const Interface = ({ ethPrice }: Props) => {
         </Flex>
         {isSuccess && (
           <Flex color="black" mt={7} mb={7} textAlign="center">
-            Successfully paid {selectedToken.value ? subAmount : priceInEth}{" "}
-            {selectedToken.label} to {address}
+            Successfully paid {amount} {selectedToken.label} to {address}
           </Flex>
         )}
       </Box>
