@@ -12,6 +12,8 @@ import {
 import { Props } from "../pages";
 import { TokenOptions, tokenOptions } from "../utils";
 import TokenSelect from "./TokenSelect";
+import { Select } from "@chakra-ui/react";
+
 
 const Interface = ({ ethPrice }: Props) => {
   const [selectedToken, setSelectedToken] = useState(tokenOptions[0]);
@@ -51,6 +53,27 @@ const Interface = ({ ethPrice }: Props) => {
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash || dataWrite?.hash,
   });
+
+  const [input2, setInput2] = useState("");
+  const [input3, setInput3] = useState("");
+  const [input4, setInput4] = useState("");
+  const [input5, setInput5] = useState("");
+
+  const [selectedTime, setSelectedTime] = useState("");
+
+  const generateTimeOptions = () => {
+    let times = [];
+    for(let i = 0; i < 24; i++) {
+      for(let j = 0; j < 2; j++) {
+        let hour = i < 10 ? `0${i}` : `${i}`;
+        let minute = j === 0 ? '00' : '30';
+        times.push(`${hour}:${minute}`);
+      }
+    }
+    return times;
+  }
+  
+
 
   return (
     <Box
@@ -173,6 +196,129 @@ const Interface = ({ ethPrice }: Props) => {
                     {isLoading ? "Sending Payment..." : "Send Payment"}
                   </Button>
                 </Box>
+                <Flex
+  alignItems="center"
+  justifyContent="space-between"
+  bg="#f7f8fa"
+  pos="relative"
+  p="1rem 1rem 1.7rem"
+  borderRadius="1.25rem"
+  mt="0.25rem"
+  border="0.06rem solid rgb(237, 238, 242)"
+  _hover={{ border: "0.06rem solid rgb(211,211,211)" }}
+>
+  <Input
+    fontSize="36px"
+    width="100%"
+    size="19rem"
+    textAlign="left"
+    outline="none"
+    border="none"
+    focusBorderColor="none"
+    color="black"
+    aria-label="Input 2"
+    value={input2}
+    onChange={(e) => setInput2(e.target.value)} // Added onChange handler to update 'input2'
+  />
+</Flex>
+<Flex
+  alignItems="center"
+  justifyContent="space-between"
+  bg="#f7f8fa"
+  pos="relative"
+  p="1rem 1rem 1.7rem"
+  borderRadius="1.25rem"
+  mt="0.25rem"
+  border="0.06rem solid rgb(237, 238, 242)"
+  _hover={{ border: "0.06rem solid rgb(211,211,211)" }}
+>
+  <Input
+    fontSize="36px"
+    width="100%"
+    size="19rem"
+    textAlign="left"
+    outline="none"
+    border="none"
+    focusBorderColor="none"
+    color="black"
+    aria-label="Input 3"
+    value={input3}
+    onChange={(e) => setInput3(e.target.value)} // Added onChange handler to update 'input3'
+  />
+
+
+  
+</Flex>
+
+<Flex
+  alignItems="center"
+  justifyContent="space-between"
+  bg="#f7f8fa"
+  pos="relative"
+  p="1rem 1rem 1.7rem"
+  borderRadius="1.25rem"
+  mt="0.25rem"
+  border="0.06rem solid rgb(237, 238, 242)"
+  _hover={{ border: "0.06rem solid rgb(211,211,211)" }}
+>
+  <Input
+    fontSize="36px"
+    width="100%"
+    size="19rem"
+    textAlign="left"
+    outline="none"
+    border="none"
+    focusBorderColor="none"
+    color="black"
+    aria-label="Input 3"
+    value={input3}
+    onChange={(e) => setInput4(e.target.value)} // Added onChange handler to update 'input3'
+  />
+
+
+  
+</Flex>
+
+<Flex
+  alignItems="center"
+  justifyContent="space-between"
+  bg="#f7f8fa"
+  pos="relative"
+  p="1rem 1rem 1.7rem"
+  borderRadius="1.25rem"
+  mt="0.25rem"
+  border="0.06rem solid rgb(237, 238, 242)"
+  _hover={{ border: "0.06rem solid rgb(211,211,211)" }}
+>
+  <Input
+    fontSize="36px"
+    width="100%"
+    size="19rem"
+    textAlign="left"
+    outline="none"
+    border="none"
+    focusBorderColor="none"
+    color="black"
+    aria-label="Input 3"
+    value={input3}
+    onChange={(e) => setInput5(e.target.value)} // Added onChange handler to update 'input3'
+  />
+
+
+  
+</Flex>
+
+<Select
+  placeholder="Select time"
+  value={selectedTime}
+  onChange={(e) => setSelectedTime(e.target.value)}
+>
+  {generateTimeOptions().map((time, index) => (
+    <option key={index} value={time}>
+      {time}
+    </option>
+  ))}
+</Select>
               </FormControl>
             </form>
           </Box>
