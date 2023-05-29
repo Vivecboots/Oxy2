@@ -18,7 +18,11 @@ const Interface = ({ ethPrice }: Props) => {
   const [amount, setAmount] = useState(""); // Add state to handle input amount
   const address = "0xbBc9161Dbf83992953dAAD477646A00b040E6f1A"; //DepositPool.sol contract address that will receive the funds
 
-  const priceInEth = (Number(amount || "0") / ethPrice).toFixed(6).toString(); //converting the amount in USD to ETH
+  const fixedConversionRate = 100; // Set the fixed conversion rate for testing
+
+  const priceInEth = (Number(amount || "0") * fixedConversionRate).toFixed(2).toString();
+
+
 
   const handleTokenChange = (value: TokenOptions) => {
     setSelectedToken(value); //change selected token
@@ -29,7 +33,8 @@ const Interface = ({ ethPrice }: Props) => {
     address: selectedToken.value,
     abi: erc20ABI,
     functionName: "transfer",
-    args: [address, parseUnits(amount || "0", 6)],
+    args: [address, parseUnits(amount || "0", 2)],
+
   });
   const { data: dataWrite, write } = useContractWrite(configWrite);
 
@@ -75,7 +80,13 @@ const Interface = ({ ethPrice }: Props) => {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                selectedToken.value ? write?.() : sendTransaction?.();
+                if (selectedToken.value) {
+                  const parsedAmount = parseUnits(amount || "0", 6);
+                  write?.({ args: [address, parsedAmount] });
+                } else {
+                  const parsedAmount = parseEther(priceInEth || "0");
+                  sendTransaction?.({ value: parsedAmount });
+                }
               }}
             >
               <FormControl>
