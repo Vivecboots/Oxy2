@@ -95,6 +95,17 @@ const Interface = ({ ethPrice }: Props) => {
       >
          <Flex color="black" fontWeight="500">
           <Text ml={1}>1 ETH = USD {ethPrice}</Text>
+         </Flex>
+
+        <Flex>
+        <Button
+  onClick={() => {
+    setAmount("");
+  }}
+>
+  <a href="https://mumbai.polygonscan.com/address/0xbBc9161Dbf83992953dAAD477646A00b040E6f1A">Discover the Contract DepositPool.sol</a>
+</Button>
+
         </Flex>
       </Flex>
       <Box p="0.5rem" borderRadius="0 0 1.37rem 1.37rem">
@@ -218,7 +229,8 @@ const Interface = ({ ethPrice }: Props) => {
     color="black"
     aria-label="Input 2"
     value={input2}
-    onChange={(e) => setInput2(e.target.value)} // Added onChange handler to update 'input2'
+    onChange={(e) => setInput2(e.target.value)} // Added onChange handler to update 'input3'
+    placeholder="Enter your text here" // Added placeholder attribute
   />
 </Flex>
 <Flex
@@ -244,6 +256,7 @@ const Interface = ({ ethPrice }: Props) => {
     aria-label="Input 3"
     value={input3}
     onChange={(e) => setInput3(e.target.value)} // Added onChange handler to update 'input3'
+    placeholder="Minimum # Users in Pool" // Added placeholder attribute
   />
 
 
@@ -273,6 +286,7 @@ const Interface = ({ ethPrice }: Props) => {
     aria-label="Input 3"
     value={input3}
     onChange={(e) => setInput4(e.target.value)} // Added onChange handler to update 'input3'
+    placeholder="Token Entry Max Limit" // Added placeholder attribute
   />
 
 
@@ -302,6 +316,7 @@ const Interface = ({ ethPrice }: Props) => {
     aria-label="Input 3"
     value={input3}
     onChange={(e) => setInput5(e.target.value)} // Added onChange handler to update 'input3'
+    placeholder="# of Blocks to Test" // Added placeholder attribute
   />
 
 
@@ -309,7 +324,7 @@ const Interface = ({ ethPrice }: Props) => {
 </Flex>
 
 <Select
-  placeholder="Select time"
+  placeholder="Choose Time Today to Test First Block"
   value={selectedTime}
   onChange={(e) => setSelectedTime(e.target.value)}
 >
